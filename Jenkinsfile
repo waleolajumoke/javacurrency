@@ -24,7 +24,7 @@ pipeline {
 	    stage('Pushing Docker Image to Dockerhub') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerid') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerlogin') {
                         docker.image("tech365/testjava:${TAG}").push()
                         docker.image("tech365/testjava:${TAG}").push("latest")
                     }
