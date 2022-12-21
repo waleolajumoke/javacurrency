@@ -3,10 +3,7 @@ pipeline {
     tools {
         maven 'myMaven' 
     }
-    environment {
-        DATE = new Date().format('yy.M')
-        TAG = "${DATE}.${BUILD_NUMBER}"
-    }
+   
     stages {
         stage ('Build') {
             steps {
@@ -20,7 +17,7 @@ pipeline {
                     [credentialsId:"dockerlogin", url: ""]
                 )  {
                     script{
-                    app = docker.build("tech365/testjava")
+                    app = docker.build("testjava")
                     }
                 }
             }
@@ -41,7 +38,7 @@ pipeline {
             steps {
                 sh "docker stop testjava | true"
                 sh "docker rm testjava | true"
-                sh "docker run --name testjava -d -p 9004:8080 tech365/testjava:${TAG}"
+                sh "docker run --name testjava -d -p 9004:8080 tech365/testjava:latest"
             }
         }
  
