@@ -13,13 +13,26 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-        stage('Docker Build') {
-            steps {
-                script {
-                    docker.build("tech365/testjava:${TAG}")
+//         stage('Docker Build') {
+//             steps {
+//                 script {
+//                     docker.build("tech365/testjava:${TAG}")
+//                 }
+//             }
+//         }
+	    stage('Docker Build'){
+            steps{
+                withDockerRegistry(
+                    [credentialsId:"dockerlogin", url: ""]
+                )  {
+                    script{
+                    app = docker.build("tech365/testjava:${TAG}")
+                    }
                 }
             }
         }
+		    
+		    
 	    stage('Pushing Docker Image to Dockerhub') {
             steps {
                 script {
