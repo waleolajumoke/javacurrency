@@ -26,7 +26,7 @@ pipeline {
                     [credentialsId:"dockerlogin", url: ""]
                 )  {
                     script{
-                    app = docker.build(testjava")
+                    app = docker.build("testjava")
                     }
                 }
             }
