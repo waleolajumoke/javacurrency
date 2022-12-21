@@ -26,23 +26,35 @@ pipeline {
                     [credentialsId:"dockerlogin", url: ""]
                 )  {
                     script{
-                    app = docker.build("tech365/testjava:${TAG}")
+                    app = docker.build(testjava")
                     }
                 }
             }
         }
+		 stage('Push'){
+             steps{
+                 script{
+                     docker.withRegistry("https://registry.hub.docker.com", "dockerlogin"){
+                         app.push("latest")
+                     }
+                    
+                    
+//                 }
+//             }
+//         }
+    }
+   
 		    
-		    
-	    stage('Pushing Docker Image to Dockerhub') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerlogin') {
-                        docker.image("tech365/testjava:${TAG}").push()
-                        docker.image("tech365/testjava:${TAG}").push("latest")
-                    }
-                }
-            }
-        }
+// 	    stage('Pushing Docker Image to Dockerhub') {
+//             steps {
+//                 script {
+//                     docker.withRegistry('https://registry.hub.docker.com', 'dockerlogin') {
+//                         docker.image("tech365/testjava:${TAG}").push()
+//                         docker.image("tech365/testjava:${TAG}").push("latest")
+//                     }
+//                 }
+//             }
+//         }
         stage('Deploy'){
             steps {
                 sh "docker stop testjava | true"
